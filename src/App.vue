@@ -2,14 +2,12 @@
   <div id="app">
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1><br>
+
     <ul>
-    <li  v-for="(machine,index) in tableau" >
-    <h2 v-bind:class="{green:machine.active}">{{machine.nom}}</h2>
-    <p>fonctionne {{machine.active}}</p>
-    <toggle-button :color="{checked: '#41d100',unchecked: '#cb0c70'} " v-model="machine.active"/>
-    <br><br>
-    </li>
+      <machine  v-for="(machine) in machines" :key="machine.id" :objet="machine"></machine>
     </ul>
+    <formAjoutMachine :tempo="machineTempo"></formAjoutMachine>
+    <button class="btn btn-success" @click="addMachines(machineTempo.selectName,machineTempo.selectEtat)">Valider</button>
     </div>
 </template>
 <script>
@@ -18,7 +16,11 @@
     data() {
       return {
         msg: 'Welcome to the future',
-        tableau: [
+        machineTempo:{
+          selectName:'',
+          selectEtat: false,
+        },
+      machines: [
           {
             nom: 'Hobbit',
             active: true,
@@ -35,7 +37,17 @@
             nom: 'Comté',
             active: true,
           }
-        ],
+        ]
+      }
+    },
+    methods:{
+      addMachines: function (name,etat) {
+        if (etat === 'true'){
+          etat = true
+        }else {
+          etat = false
+        }
+        this.machines.push({nom:name,active:etat})
       }
     }
   }
